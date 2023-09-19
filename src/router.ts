@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import { registerUser } from './controllers/usersControllers';
+import { loginUser, registerUser } from './controllers/usersControllers';
 
 export const router = Router();
 
@@ -23,4 +23,4 @@ const users = async (req: Request, res: Response) => {
 
 router.get('/', users);
 router.post('/user/register', registerUser);
-//router.post('/user/login', loginUser);
+router.post('/user/login', loginUser);
