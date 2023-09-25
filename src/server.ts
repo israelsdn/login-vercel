@@ -6,7 +6,11 @@ require('dotenv').config();
 const app = express();
 
 app.use(express.json());
-app.use(cors())
-app.use(router)
+app.use(
+  cors({
+    origin: 'https://israelsdn.live',
+  }),
+);
+app.use(router);
 
 app.listen(process.env.PORT);
