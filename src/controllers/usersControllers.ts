@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 require('dotenv').config();
 
+const secret = process.env.SECRET as string;
+
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const user: IUser = req.body;
@@ -63,8 +65,6 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 
     // Gerando token
-    const secret = process.env.SECRET as string;
-
     const token = jwt.sign(
       {
         id: user.id,
@@ -75,5 +75,17 @@ export const loginUser = async (req: Request, res: Response) => {
     return res.status(200).json({ token: token });
   } catch (error) {
     return res.status(500).json('algo inesperado aconteceu');
+  }
+};
+
+export const tokenVerify = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body;
+
+    const decoded = jwt.verify(token, secret);
+
+    return res.status(200).json({ msg: decoded });
+  } catch (error) {
+    return res.status(404).json({ msg: 'invalido' });
   }
 };
