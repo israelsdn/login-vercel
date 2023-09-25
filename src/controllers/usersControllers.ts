@@ -72,7 +72,7 @@ export const loginUser = async (req: Request, res: Response) => {
       secret,
     );
 
-    return res.status(200).json({ token: token });
+    return res.status(200).json(token);
   } catch (error) {
     return res.status(500).json('algo inesperado aconteceu');
   }
