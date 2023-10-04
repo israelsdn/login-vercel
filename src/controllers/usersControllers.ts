@@ -70,6 +70,9 @@ export const loginUser = async (req: Request, res: Response) => {
         id: user.id,
       },
       secret,
+      {
+        expiresIn: '1h',
+      },
     );
 
     return res.status(200).json(token);
