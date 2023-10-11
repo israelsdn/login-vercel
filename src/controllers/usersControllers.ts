@@ -1,4 +1,4 @@
-import { IUser, createUser, getUser } from '../models/user';
+import { IUser, createUser, getUser, getUserId } from '../models/user';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -81,14 +81,22 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-export const tokenVerify = async (req: Request, res: Response) => {
+export const tokenVerify = async (req: Request, res: Response, next: any) => {
+  const authHeader = req.headers['authorization'] as string;
+
+  if (!authHeader) {
+    return res.status(401).json({ msg: 'Token undefined' });
+  }
+
   try {
-    const { token } = req.body;
+    const { id }: any = jwt.verify(authHeader, secret);
 
-    const decoded = jwt.verify(token, secret);
+    const user = await getUserId(id);
 
-    return res.status(200).json({ msg: decoded });
+    res.status(200).json({ email: user?.email, name: user?.name });
+
+    next();
   } catch (error) {
-    return res.status(404).json({ msg: 'invalido' });
+    return res.status(404).json({ msg: authHeader });
   }
 };

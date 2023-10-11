@@ -34,3 +34,12 @@ export async function getUser(email: string) {
   });
   return user;
 }
+
+export async function getUserId(id: number) {
+  const user = await prisma.users.findUnique({
+    where: {
+      id,
+    },
+  });
+  return user;
+}
