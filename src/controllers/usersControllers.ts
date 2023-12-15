@@ -82,7 +82,7 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 export const tokenVerify = async (req: Request, res: Response, next: any) => {
-  const authHeader = req.headers['authorization'] as string;
+  const authHeader = req.headers['authorization'];
 
   if (!authHeader) {
     return res.status(401).json({ msg: 'Token undefined' });
